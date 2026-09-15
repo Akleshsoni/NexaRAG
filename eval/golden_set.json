@@ -1,0 +1,26 @@
+[
+  {
+    "question": "What is the time complexity of searching in a balanced binary search tree?",
+    "expected_answer": "O(log n)"
+  },
+  {
+    "question": "What is the difference between a stack and a queue?",
+    "expected_answer": "A stack follows LIFO (last in, first out) and only needs one pointer (top). A queue follows FIFO (first in, first out) and needs two pointers (front and rear)."
+  },
+  {
+    "question": "What is the time complexity of accessing an element in an array by index?",
+    "expected_answer": "O(1)"
+  },
+  {
+    "question": "What is the worst-case time complexity of quick sort?",
+    "expected_answer": "O(n^2), when pivot choices are poor"
+  },
+  {
+    "question": "Which data structure does breadth-first search (BFS) use for traversal?",
+    "expected_answer": "A queue"
+  },
+  {
+    "question": "What is the space complexity of an adjacency list representation of a graph?",
+    "expected_answer": "O(V+E)"
+  }
+]
