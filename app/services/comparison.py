@@ -1,11 +1,28 @@
-"""Multi-document comparison service.
+"""Multi-document comparison retrieval.
 
-Uses the existing Qdrant search pipeline and restricts retrieval
-to each requested document.
+For each requested document, retrieve its best chunks with a Qdrant filter on
+(tenant_id AND document_id). The tenant condition is always applied, so one
+tenant can never pull another tenant's chunks even by guessing a document id.
 """
+from starlette.concurrency import run_in_threadpool
 
+from app.services import vectorstore
 from app.services.embeddings import embed_query
-from app.services.vectorstore import search
+
+
+def _retrieve(tenant_id: str, question: str, document_ids: list[str], top_k_per_doc: int) -> dict:
+    query_vector = embed_query(question)
+    per_doc_chunks: dict[str, list[dict]] = {}
+    all_chunks: list[dict] = []
+
+    for document_id in document_ids:
+        results = vectorstore.search(
+            tenant_id, query_vector, top_k=top_k_per_doc, document_ids=[document_id]
+        )
+        per_doc_chunks[str(document_id)] = results
+        all_chunks.extend(results)
+
+    return {"per_doc_chunks": per_doc_chunks, "all_chunks": all_chunks}
 
 
 async def compare_documents(
@@ -14,36 +31,4 @@ async def compare_documents(
     document_ids: list[str],
     top_k_per_doc: int = 4,
 ) -> dict:
-    """Retrieve relevant chunks from each requested document."""
-
-    query_vector = embed_query(question)
-
-    per_doc_chunks: dict[str, list[dict]] = {}
-    all_chunks: list[dict] = []
-
-    for document_id in document_ids:
-        # Existing search() already enforces tenant isolation.
-        results = search(
-            tenant_id=tenant_id,
-            query_vector=query_vector,
-            top_k=top_k_per_doc * 3,
-        )
-
-        # Restrict results to the requested document.
-        doc_results = [
-            chunk
-            for chunk in results
-            if str(chunk.get("document_id")) == str(document_id)
-        ][:top_k_per_doc]
-
-        per_doc_chunks[str(document_id)] = doc_results
-
-        for chunk in doc_results:
-            chunk_copy = dict(chunk)
-            chunk_copy["document_id"] = str(document_id)
-            all_chunks.append(chunk_copy)
-
-    return {
-        "per_doc_chunks": per_doc_chunks,
-        "all_chunks": all_chunks,
-    }
+    return await run_in_threadpool(_retrieve, tenant_id, question, document_ids, top_k_per_doc)

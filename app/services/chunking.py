@@ -4,9 +4,18 @@ Token-aware chunking beats naive character splitting because it keeps chunk
 sizes consistent regardless of formatting, and the overlap prevents an answer
 from being cut in half across a chunk boundary.
 """
-import tiktoken
+_encoder_cache = None
 
-_ENCODER = tiktoken.get_encoding("cl100k_base")
+
+def _encoder():
+    """Loaded lazily: tiktoken fetches its vocabulary on first use, so importing
+    the app (tests, CI, health checks) must not depend on that download."""
+    global _encoder_cache
+    if _encoder_cache is None:
+        import tiktoken
+
+        _encoder_cache = tiktoken.get_encoding("cl100k_base")
+    return _encoder_cache
 
 
 def chunk_text(
@@ -17,14 +26,15 @@ def chunk_text(
     if not text.strip():
         return []
 
-    tokens = _ENCODER.encode(text)
+    enc = _encoder()
+    tokens = enc.encode(text)
     chunks: list[str] = []
     start = 0
 
     while start < len(tokens):
         end = min(start + chunk_size_tokens, len(tokens))
         chunk_tokens = tokens[start:end]
-        chunks.append(_ENCODER.decode(chunk_tokens))
+        chunks.append(enc.decode(chunk_tokens))
         if end == len(tokens):
             break
         start = end - overlap_tokens  # slide window back for overlap

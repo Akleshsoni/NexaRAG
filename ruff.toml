@@ -1,0 +1,11 @@
+line-length = 120
+target-version = "py312"
+
+[lint]
+select = ["E", "F", "I", "B"]
+ignore = ["B008"]  # FastAPI Depends() in defaults is the intended pattern
+
+[lint.per-file-ignores]
+"app/api/routes/chat_ui.py" = ["E501"]  # embedded HTML/JS template
+"eval/*" = ["E501"]
+"locustfile.py" = ["E501"]

@@ -1,3 +1,5 @@
+# Local development stack. `api` and `worker` mount ./app for live edits and the API
+# runs with --reload; for a deployment remove those mounts and the --reload flag.
 services:
   api:
     build: .
@@ -12,9 +14,10 @@ services:
       db:
         condition: service_healthy
       redis:
-        condition: service_started
+        condition: service_healthy
       qdrant:
         condition: service_started
+    restart: on-failure
 
   worker:
     build: .
@@ -27,9 +30,10 @@ services:
       db:
         condition: service_healthy
       redis:
-        condition: service_started
+        condition: service_healthy
       qdrant:
         condition: service_started
+    restart: on-failure
 
   db:
     image: postgres:16-alpine
@@ -37,8 +41,10 @@ services:
       POSTGRES_USER: documind
       POSTGRES_PASSWORD: documind
       POSTGRES_DB: documind
-    #ports:
-      #- "5432:5432"
+    # No host port: other local PostgreSQL installs often already use 5432.
+    # Uncomment to connect from the host:
+    # ports:
+    #   - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -49,17 +55,23 @@ services:
 
   redis:
     image: redis:7-alpine
-    #ports:
-     # - "6379:6379"
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
 
   qdrant:
     image: qdrant/qdrant:latest
     ports:
-      - "6333:6333"
+      - "127.0.0.1:6333:6333"   # bound to localhost only: Qdrant has no auth here
     volumes:
       - qdrant_data:/qdrant/storage
 
 volumes:
   pgdata:
+  redisdata:
   qdrant_data:
   uploads:

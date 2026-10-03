@@ -1,4 +1,5 @@
 from functools import lru_cache
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -19,13 +20,29 @@ class Settings(BaseSettings):
 
     gemini_api_key: str = ""
     llm_model: str = "gemini-2.5-flash"
-    voyage_api_key: str = ""
-    embedding_model: str = "voyage-3-lite"
+    embedding_model: str = "BAAI/bge-small-en-v1.5"
 
     default_tenant_token_budget: int = 200_000
 
     access_token_expire_minutes: int = 60 * 24
     jwt_algorithm: str = "HS256"
+
+    # --- Uploads ---
+    upload_dir: str = "/data/uploads"
+    max_upload_mb: int = 10
+
+    # --- Retrieval ---
+    # Minimum cosine similarity (vector score) for a chunk to count as relevant.
+    # Below this, no chunks are used and the query falls back to general AI.
+    # This is a heuristic for the bge-small model; tune it with eval/evaluate_rag.py.
+    retrieval_min_score: float = 0.55
+    retrieval_dedup_overlap: float = 0.70
+
+    # --- Rate limits (requests per minute, per user) ---
+    rate_limit_default_rpm: int = 60
+    rate_limit_query_rpm: int = 30
+    rate_limit_upload_rpm: int = 10
+    rate_limit_suggestions_rpm: int = 5
 
 
 @lru_cache

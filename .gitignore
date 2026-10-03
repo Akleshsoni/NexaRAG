@@ -1,9 +1,27 @@
+# Secrets -- never commit
 .env
+.env.*
+!.env.example
+
+# Python
 __pycache__/
 *.pyc
 .venv/
 venv/
 *.egg-info/
 .pytest_cache/
-eval/last_run.json
+.ruff_cache/
+
+# Runtime data
 data/
+uploads/
+eval/last_report.json
+eval/last_run.json
+load_*.csv
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.zip

@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.security import create_access_token, hash_password, verify_password
@@ -26,7 +27,11 @@ async def signup(payload: SignupRequest, db: AsyncSession = Depends(get_db)):
         hashed_password=hash_password(payload.password),
     )
     db.add(user)
-    await db.commit()
+    try:
+        await db.commit()
+    except IntegrityError as exc:  # two signups with the same email at once
+        await db.rollback()
+        raise HTTPException(status_code=400, detail="Email already registered") from exc
 
     token = create_access_token(subject=str(user.id), tenant_id=str(tenant.id))
     return TokenResponse(access_token=token)

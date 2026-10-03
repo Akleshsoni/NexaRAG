@@ -1,0 +1,225 @@
+{
+  "description": "Evaluation set for eval/sample_docs/cs_notes.pdf. 'evidence' is a phrase from the source passage: a retrieved chunk counts as relevant if it contains it (case/whitespace-insensitive). 'answer_keywords' are lower-case terms a correct answer should mention. 'out_of_scope' questions should NOT retrieve document chunks.",
+  "in_scope": [
+    {
+      "question": "What is the time complexity of accessing an array element by index?",
+      "evidence": "Accessing an element by index takes O(1)",
+      "answer_keywords": [
+        "o(1)"
+      ],
+      "lang": "en"
+    },
+    {
+      "question": "Why is inserting into the middle of an array slow?",
+      "evidence": "must be shifted",
+      "answer_keywords": [
+        "shift"
+      ],
+      "lang": "en"
+    },
+    {
+      "question": "What does each node of a linked list contain?",
+      "evidence": "contains data and a pointer to the next node",
+      "answer_keywords": [
+        "pointer",
+        "next"
+      ],
+      "lang": "en"
+    },
+    {
+      "question": "What are the common types of linked lists?",
+      "evidence": "singly linked list, doubly linked list",
+      "answer_keywords": [
+        "doubly",
+        "circular"
+      ],
+      "lang": "en"
+    },
+    {
+      "question": "How fast is insertion at the head of a linked list?",
+      "evidence": "Insertion and deletion at the head take O(1)",
+      "answer_keywords": [
+        "o(1)"
+      ],
+      "lang": "en"
+    },
+    {
+      "question": "What principle does a stack follow?",
+      "evidence": "follows the LIFO",
+      "answer_keywords": [
+        "lifo"
+      ],
+      "lang": "en"
+    },
+    {
+      "question": "What are the main operations of a stack?",
+      "evidence": "push (insert an element)",
+      "answer_keywords": [
+        "push",
+        "pop",
+        "peek"
+      ],
+      "lang": "en"
+    },
+    {
+      "question": "Where are stacks used?",
+      "evidence": "function call management",
+      "answer_keywords": [
+        "function call",
+        "undo"
+      ],
+      "lang": "en"
+    },
+    {
+      "question": "What principle does a queue follow?",
+      "evidence": "follows the FIFO",
+      "answer_keywords": [
+        "fifo"
+      ],
+      "lang": "en"
+    },
+    {
+      "question": "What are the main queue operations?",
+      "evidence": "enqueue (insert an element)",
+      "answer_keywords": [
+        "enqueue",
+        "dequeue"
+      ],
+      "lang": "en"
+    },
+    {
+      "question": "What is the purpose of a circular queue?",
+      "evidence": "A circular queue reuses empty slots",
+      "answer_keywords": [
+        "reuse",
+        "empty"
+      ],
+      "lang": "en"
+    },
+    {
+      "question": "What is the key difference between a stack and a queue?",
+      "evidence": "order in which elements are removed",
+      "answer_keywords": [
+        "lifo",
+        "fifo"
+      ],
+      "lang": "en"
+    },
+    {
+      "question": "How many pointers does a stack need compared to a queue?",
+      "evidence": "only needs one pointer (top)",
+      "answer_keywords": [
+        "top"
+      ],
+      "lang": "en"
+    },
+    {
+      "question": "How many children can a binary tree node have?",
+      "evidence": "at most two children",
+      "answer_keywords": [
+        "two"
+      ],
+      "lang": "en"
+    },
+    {
+      "question": "What property defines a binary search tree?",
+      "evidence": "left subtree of a node contains only values smaller",
+      "answer_keywords": [
+        "smaller",
+        "greater"
+      ],
+      "lang": "en"
+    },
+    {
+      "question": "What is the search time in a balanced binary search tree?",
+      "evidence": "take O(log n) time",
+      "answer_keywords": [
+        "log n"
+      ],
+      "lang": "en"
+    },
+    {
+      "question": "What happens to BST performance when the tree is unbalanced?",
+      "evidence": "degrade to O(n)",
+      "answer_keywords": [
+        "o(n)"
+      ],
+      "lang": "en"
+    },
+    {
+      "question": "What is the space complexity of an adjacency list?",
+      "evidence": "adjacency list, which uses O(V+E)",
+      "answer_keywords": [
+        "v+e"
+      ],
+      "lang": "en"
+    },
+    {
+      "question": "Which data structure does BFS use?",
+      "evidence": "breadth-first search (bfs), which uses a queue",
+      "answer_keywords": [
+        "queue"
+      ],
+      "lang": "en"
+    },
+    {
+      "question": "Which structure does DFS use?",
+      "evidence": "depth-first search (dfs), which uses a stack or recursion",
+      "answer_keywords": [
+        "stack",
+        "recursion"
+      ],
+      "lang": "en"
+    },
+    {
+      "question": "What is the worst-case time complexity of bubble sort?",
+      "evidence": "O(n^2) time complexity in the worst case",
+      "answer_keywords": [
+        "n^2"
+      ],
+      "lang": "en"
+    },
+    {
+      "question": "What is the time complexity of merge sort?",
+      "evidence": "O(n log n) time complexity in all cases",
+      "answer_keywords": [
+        "n log n"
+      ],
+      "lang": "en"
+    },
+    {
+      "question": "When does quick sort hit its worst case?",
+      "evidence": "worst case O(n^2) when the pivot choices are poor",
+      "answer_keywords": [
+        "pivot"
+      ],
+      "lang": "en"
+    },
+    {
+      "question": "Stack aur queue mein main difference kya hai?",
+      "evidence": "order in which elements are removed",
+      "answer_keywords": [
+        "lifo",
+        "fifo"
+      ],
+      "lang": "hinglish"
+    }
+  ],
+  "out_of_scope": [
+    {
+      "question": "What is the capital of France?"
+    },
+    {
+      "question": "Write a haiku about the monsoon."
+    },
+    {
+      "question": "Who won the 2018 FIFA World Cup?"
+    },
+    {
+      "question": "How do I make masala chai?"
+    },
+    {
+      "question": "What is the tallest mountain in the world?"
+    }
+  ]
+}
